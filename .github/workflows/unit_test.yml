@@ -1,0 +1,21 @@
+name: Unit Tests
+
+on:
+  workflow_run:
+    workflows: ["CI-CD"]
+    types:
+      - completed
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: npx yarn
+    - uses: actions/download-artifact@v3
+      with:
+        name: assets
+        path: dist
+    - name: Run Tests
+      run: npx yarn test
